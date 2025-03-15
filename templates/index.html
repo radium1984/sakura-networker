@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Network Device Monitor</title>
+    <meta http-equiv="refresh" content="10">
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #e0e0e0;
+            --online: #4CAF50;
+            --offline: #f44336;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .devices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .device-card {
+            background: linear-gradient(145deg, #333333, #2a2a2a);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .device-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .status-dot {
+            height: 15px;
+            width: 15px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .online .status-dot {
+            background-color: var(--online);
+        }
+
+        .offline .status-dot {
+            background-color: var(--offline);
+            animation: none;
+        }
+
+        .device-info {
+            margin-bottom: 8px;
+        }
+
+        .device-name {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Network Device Status</h1>
+        <div class="devices-grid">
+            {% for device in devices %}
+            <div class="device-card {{ device.status_class }}">
+                <div class="device-name">{{ device.name }}</div>
+                <div class="device-info">
+                    <span class="status-dot"></span>
+                    Status: {{ device.status }}
+                </div>
+                <div class="device-info">IP: {{ device.ip }}</div>
+                <div class="device-info">Ping: {{ device.ping_time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
